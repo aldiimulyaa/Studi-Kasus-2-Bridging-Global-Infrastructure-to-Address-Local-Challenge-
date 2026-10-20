@@ -10,7 +10,6 @@ print(" SIMULASI HPC & AI UNTUK PREDIKSI KUALITAS UDARA (PM2.5)")
 print(" Studi Kasus: Mitigasi Tantangan Lingkungan Lokal")
 print("==================================================\n")
 
-# 1. Simulasi Pembuatan Dataset Lingkungan Skala Besar (Data Ingestion)
 def generate_hpc_environmental_data(n_samples=5000):
     np.random.seed(42)
     data = {
@@ -20,7 +19,7 @@ def generate_hpc_environmental_data(n_samples=5000):
         'traffic_density': np.random.randint(100, 5000, size=n_samples),
         'industrial_output': np.random.uniform(10.0, 200.0, size=n_samples)
     }
-    # Formula simulasi target PM2.5 dengan faktor non-linear
+    
     pm25 = (
         2.5 * data['temperature'] - 
         0.8 * data['humidity'] - 
@@ -37,19 +36,16 @@ start_time = time.time()
 df = generate_hpc_environmental_data(10000)
 print(f"[INFO] Berhasil memproses {len(df)} baris data dalam {time.time() - start_time:.4f} detik.\n")
 
-# 2. Data Preparation & Feature Splitting
 X = df[['temperature', 'humidity', 'wind_speed', 'traffic_density', 'industrial_output']]
 y = df['pm25_level']
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# 3. Model Training (Ensemble Learning / Random Forest Regressor)
 print("[INFO] Melatih model Machine Learning berbasis Ensemble...")
-model = RandomForestRegressor(n_estimators=150, random_state=42, n_jobs=-1) # n_jobs=-1 memanfaatkan seluruh core CPU (Parallel Processing)
+model = RandomForestRegressor(n_estimators=150, random_state=42, n_jobs=-1) 
 model.fit(X_train, y_train)
 print("[INFO] Pelatihan model selesai!\n")
 
-# 4. Model Evaluation
 y_pred = model.predict(X_test)
 mse = mean_squared_error(y_test, y_pred)
 rmse = np.sqrt(mse)
